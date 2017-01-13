@@ -12315,3 +12315,9 @@ go_library(
     tags = ["automanaged"],
     deps = ["//vendor:k8s.io/apiserver/pkg/authentication/user"],
 )
+
+go_library(
+    name = "github.com/motemen/go-loghttp",
+    srcs = ["github.com/motemen/go-loghttp/loghttp.go"],
+    tags = ["automanaged"],
+)

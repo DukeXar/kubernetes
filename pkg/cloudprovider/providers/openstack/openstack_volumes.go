@@ -47,6 +47,7 @@ func (os *OpenStack) AttachDisk(instanceID string, diskName string) (string, err
 		glog.Errorf("Unable to initialize nova client for region: %s", os.region)
 		return "", err
 	}
+	EnableHTTPLogging(cClient)
 
 	if len(disk.Attachments) > 0 && disk.Attachments[0]["server_id"] != nil {
 		if instanceID == disk.Attachments[0]["server_id"] {
@@ -86,6 +87,8 @@ func (os *OpenStack) DetachDisk(instanceID string, partialDiskId string) error {
 		glog.Errorf("Unable to initialize nova client for region: %s", os.region)
 		return err
 	}
+	EnableHTTPLogging(cClient)
+
 	if len(disk.Attachments) > 0 && disk.Attachments[0]["server_id"] != nil && instanceID == disk.Attachments[0]["server_id"] {
 		// This is a blocking call and effects kubelet's performance directly.
 		// We should consider kicking it out into a separate routine, if it is bad.
@@ -114,6 +117,7 @@ func (os *OpenStack) getVolume(diskName string) (volumes.Volume, error) {
 		glog.Errorf("Unable to initialize cinder client for region: %s", os.region)
 		return volume, err
 	}
+	EnableHTTPLogging(sClient)
 
 	err = volumes.List(sClient, nil).EachPage(func(page pagination.Page) (bool, error) {
 		vols, err := volumes.ExtractVolumes(page)
@@ -151,6 +155,7 @@ func (os *OpenStack) CreateVolume(name string, size int, vtype, availability str
 		glog.Errorf("Unable to initialize cinder client for region: %s", os.region)
 		return "", err
 	}
+	EnableHTTPLogging(sClient)
 
 	opts := volumes.CreateOpts{
 		Name:         name,
@@ -213,6 +218,7 @@ func (os *OpenStack) DeleteVolume(volumeName string) error {
 		glog.Errorf("Unable to initialize cinder client for region: %s", os.region)
 		return err
 	}
+	EnableHTTPLogging(sClient)
 	err = volumes.Delete(sClient, volumeName).ExtractErr()
 	if err != nil {
 		glog.Errorf("Cannot delete volume %s: %v", volumeName, err)

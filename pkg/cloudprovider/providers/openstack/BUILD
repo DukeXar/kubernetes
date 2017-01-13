@@ -30,6 +30,7 @@ go_library(
         "//pkg/volume:go_default_library",
         "//vendor:github.com/golang/glog",
         "//vendor:github.com/mitchellh/mapstructure",
+        "//vendor:github.com/motemen/go-loghttp",
         "//vendor:github.com/rackspace/gophercloud",
         "//vendor:github.com/rackspace/gophercloud/openstack",
         "//vendor:github.com/rackspace/gophercloud/openstack/blockstorage/v1/volumes",
