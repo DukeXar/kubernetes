@@ -20,7 +20,7 @@ var DefaultTransport = &Transport{
 
 // Used if transport.LogRequest is not set.
 var DefaultLogRequest = func(req *http.Request) {
-	glog.V(2).Infof("---> %s %s", req.Method, req.URL)
+	glog.V(2).Infof("---> %s %s, header=%v", req.Method, req.URL, req.Header)
 }
 
 // Used if transport.LogResponse is not set.
@@ -66,6 +66,12 @@ func (t *Transport) transport() http.RoundTripper {
 	}
 
 	return http.DefaultTransport
+}
+
+func CreateLoggingHTTPClient() http.Client {
+	return http.Client{
+		Transport: &Transport{},
+	}
 }
 
 func EnableHTTPLogging(client *gophercloud.ServiceClient) {

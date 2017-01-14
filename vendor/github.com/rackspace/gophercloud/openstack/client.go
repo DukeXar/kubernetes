@@ -54,6 +54,7 @@ func NewClient(endpoint string) (*gophercloud.ProviderClient, error) {
 					return &gophercloud.ProviderClient{
 						IdentityBase:     base[0 : len(base)-len(version)-1],
 						IdentityEndpoint: endpoint,
+						HTTPClient:       CreateLoggingHTTPClient(),
 					}, nil
 				default:
 					return nil, fmt.Errorf("Invalid identity endpoint version %v. Supported versions: v2.0, v3", version)
@@ -65,6 +66,7 @@ func NewClient(endpoint string) (*gophercloud.ProviderClient, error) {
 	return &gophercloud.ProviderClient{
 		IdentityBase:     base,
 		IdentityEndpoint: "",
+		HTTPClient:       CreateLoggingHTTPClient(),
 	}, nil
 }
 
